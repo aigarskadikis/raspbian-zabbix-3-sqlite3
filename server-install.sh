@@ -28,14 +28,16 @@ mkdir -p /var/zabbix/externalscripts
 chown -R zabbix:zabbix /var/zabbix/
 tar -vzxf zabbix-*.tar.gz -C ~
 cd ~/zabbix-*/database/sqlite3
-
 mkdir -p /var/lib/sqlite/
-sqlite3 /var/lib/sqlite/zabbix.db < schema.sql
-sqlite3 /var/lib/sqlite/zabbix.db < images.sql
-sqlite3 /var/lib/sqlite/zabbix.db < data.sql
+sqlite3 /var/lib/sqlite/zabbix.db <schema.sql
+sqlite3 /var/lib/sqlite/zabbix.db <images.sql
+sqlite3 /var/lib/sqlite/zabbix.db <data.sql
 chown -R zabbix:zabbix /var/lib/sqlite/
 chmod 774 -R /var/lib/sqlite
 chmod 664 /var/lib/sqlite/zabbix.db
+
+#chmod 775 -R /var/lib/sqlite
+#chmod 660 /var/lib/sqlite/zabbix.db
 
 #http://www.pihomeserver.fr/en/2012/12/10/raspberry-pi-home-server-etape-11-installer-nginx-avec-support-php-cgi-et-scgi/
 #for nginx
@@ -55,7 +57,7 @@ sed -i "s/^.*FpingLocation=.*$/FpingLocation=\/usr\/bin\/fping/" /usr/local/etc/
 sed -i "s/^.*AlertScriptsPath=.*$/AlertScriptsPath=\/var\/zabbix\/alertscripts/" /usr/local/etc/zabbix_server.conf
 sed -i "s/^.*ExternalScripts=.*$/ExternalScripts=\/var\/zabbix\/externalscripts/" /usr/local/etc/zabbix_server.conf
 sed -i "s/^LogFile=.*$/LogFile=\/var\/log\/zabbix\/zabbix_server.log/" /usr/local/etc/zabbix_server.conf
-sed -i "s/^.*DBName=.*$/DBName=\/var\/lib\/sqlite\/zabbix.db/" /usr/local/etc/zabbix_server.conf
+sed -i "s/DBName=.*$/DBName=\/var\/lib\/sqlite\/zabbix.db/" /usr/local/etc/zabbix_server.conf
 mkdir /var/www/html/zabbix
 cd ~/zabbix-*/frontends/php/
 cp -a . /var/www/html/zabbix/
@@ -65,7 +67,7 @@ sed -i "s/^max_input_time = .*$/max_input_time = 300/g" /etc/php5/apache2/php.in
 sed -i "s/^.*date.timezone =.*$/date.timezone = Europe\/Riga/g" /etc/php5/apache2/php.ini
 sed -i "s/^.*always_populate_raw_post_data = .*$/always_populate_raw_post_data = -1/g" /etc/php5/apache2/php.ini
 
-#chown-R www-data:www-data /var/www/zabbix
+#chown -R www-data:www-data /var/www/zabbix
 
 cat > /var/www/html/zabbix/conf/zabbix.conf.php << EOF
 <?php
