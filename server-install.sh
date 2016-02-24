@@ -7,6 +7,7 @@
 #./server-install.sh
 
 apt-get update -y && apt-get upgrade -y
+apt-get install libsqlite3-dev -y
 apt-get install apache2 apache2-dev -y
 apt-get install php5 php5-dev php5-gd -y
 apt-get install fping -y
