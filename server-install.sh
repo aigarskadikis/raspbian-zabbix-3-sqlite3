@@ -90,6 +90,7 @@ global \$DB;
 ?>
 EOF
 
+reboot
 
 #apt-get install fping sqlite3 libsnmp-dev php5-gd php5-sqlite php5-dev libiksemel-dev libsqlite3-dev libcurl4-openssl-dev php5-curl make
 
