@@ -29,7 +29,6 @@ chown -R zabbix:zabbix /var/zabbix/
 tar -vzxf zabbix-*.tar.gz -C ~
 cd ~/zabbix-*/database/sqlite3
 
-
 mkdir -p /var/lib/sqlite/
 sqlite3 /var/lib/sqlite/zabbix.db < schema.sql
 sqlite3 /var/lib/sqlite/zabbix.db < images.sql
@@ -57,7 +56,9 @@ sed -i "s/^.*AlertScriptsPath=.*$/AlertScriptsPath=\/var\/zabbix\/alertscripts/"
 sed -i "s/^.*ExternalScripts=.*$/ExternalScripts=\/var\/zabbix\/externalscripts/" /usr/local/etc/zabbix_server.conf
 sed -i "s/^LogFile=.*$/LogFile=\/var\/log\/zabbix\/zabbix_server.log/" /usr/local/etc/zabbix_server.conf
 sed -i "s/^.*DBName=.*$/DBName=\/var\/lib\/sqlite\/zabbix.db/" /usr/local/etc/zabbix_server.conf
-
+mkdir /var/www/html/zabbix
+cd ~/zabbix-*/frontends/php/
+cp -a . /var/www/html/zabbix/
 sed -i "s/^post_max_size = .*$/post_max_size = 16M/" /etc/php5/apache2/php.ini
 sed -i "s/^max_execution_time = .*$/max_execution_time = 300/" /etc/php5/apache2/php.ini
 sed -i "s/^max_input_time = .*$/max_input_time = 300/g" /etc/php5/apache2/php.ini
