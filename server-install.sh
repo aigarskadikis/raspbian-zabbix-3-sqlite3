@@ -9,7 +9,6 @@
 apt-get update -y && apt-get upgrade -y
 
 apt-get install libsqlite3-dev sqlite3 -y
-apt-get install apache2 apache2-dev -y
 apt-get install php5 php5-dev php5-gd php5-sqlite -y
 apt-get install fping -y
 apt-get install libiksemel-dev -y
@@ -48,7 +47,7 @@ sed -i "s/^.*AlertScriptsPath=.*$/AlertScriptsPath=\/var\/zabbix\/alertscripts/"
 sed -i "s/^.*ExternalScripts=.*$/ExternalScripts=\/var\/zabbix\/externalscripts/" /usr/local/etc/zabbix_server.conf
 sed -i "s/^LogFile=.*$/LogFile=\/var\/log\/zabbix\/zabbix_server.log/" /usr/local/etc/zabbix_server.conf
 sed -i "s/^DBName=.*$/DBName=\/var\/lib\/sqlite\/zabbix.db/" /usr/local/etc/zabbix_server.conf
-mkdir /var/www/html/zabbix
+mkdir -p /var/www/html/zabbix
 cd ~/zabbix-*/frontends/php/
 cp -a . /var/www/html/zabbix/
 sed -i "s/^post_max_size = .*$/post_max_size = 16M/" /etc/php5/apache2/php.ini
@@ -79,6 +78,8 @@ global \$DB;
 \$IMAGE_FORMAT_DEFAULT = IMAGE_FORMAT_PNG;
 ?>
 EOF
+
+apt-get install apache2 apache2-dev -y
 
 reboot
 
