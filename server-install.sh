@@ -27,8 +27,8 @@ mkdir -p /var/zabbix/alertscripts
 mkdir -p /var/zabbix/externalscripts
 chown -R zabbix:zabbix /var/zabbix/
 tar -vzxf zabbix-*.tar.gz -C ~
-cd ~/zabbix-*/database/sqlite3
 mkdir -p /var/lib/sqlite/
+cd ~/zabbix-*/database/sqlite3
 sqlite3 /var/lib/sqlite/zabbix.db <schema.sql
 sqlite3 /var/lib/sqlite/zabbix.db <images.sql
 sqlite3 /var/lib/sqlite/zabbix.db <data.sql
@@ -36,18 +36,8 @@ chown -R zabbix:zabbix /var/lib/sqlite/
 chmod 774 -R /var/lib/sqlite
 chmod 664 /var/lib/sqlite/zabbix.db
 
-#chmod 775 -R /var/lib/sqlite
-#chmod 660 /var/lib/sqlite/zabbix.db
-
-#http://www.pihomeserver.fr/en/2012/12/10/raspberry-pi-home-server-etape-11-installer-nginx-avec-support-php-cgi-et-scgi/
-#for nginx
-#adduser www-data zabbix
-
-#http://www.pihomeserver.fr/en/2012/12/29/raspberry-pi-home-server-monitorer-le-systeme-avec-zabbix/
-
 cd ~/zabbix-*/
 ./configure --enable-server --enable-agent --with-sqlite3 --with-libcurl --with-libxml2 --with-ssh2 --with-net-snmp --with-openipmi --with-jabber
-
 make install
 
 cp ~/zabbix-*/misc/init.d/debian/* /etc/init.d/
@@ -66,8 +56,6 @@ sed -i "s/^max_execution_time = .*$/max_execution_time = 300/" /etc/php5/apache2
 sed -i "s/^max_input_time = .*$/max_input_time = 300/g" /etc/php5/apache2/php.ini
 sed -i "s/^.*date.timezone =.*$/date.timezone = Europe\/Riga/g" /etc/php5/apache2/php.ini
 sed -i "s/^.*always_populate_raw_post_data = .*$/always_populate_raw_post_data = -1/g" /etc/php5/apache2/php.ini
-
-#chown -R www-data:www-data /var/www/zabbix
 
 cat > /var/www/html/zabbix/conf/zabbix.conf.php << EOF
 <?php
@@ -98,3 +86,15 @@ reboot
 
 #apt-get install make gcc libc6-dev-dev libmysqlclient libcurl4-openssl-dev-dev libssh2-1 libsnmp-dev libiksemel-dev sqlite3 libsqlite3-dev-dev libopenipmi 
 #apt-get install fping php5-gd-base snmp libsnmp openjdk-6-jdk unixodbc unixodbc dev libxml2 libxml2-dev snmp-mibs-downloader snmpd SNMPTT python-pywbem php5-ldap traceroute
+
+#chmod 775 -R /var/lib/sqlite
+#chmod 660 /var/lib/sqlite/zabbix.db
+
+#http://www.pihomeserver.fr/en/2012/12/10/raspberry-pi-home-server-etape-11-installer-nginx-avec-support-php-cgi-et-scgi/
+#for nginx
+#adduser www-data zabbix
+
+#http://www.pihomeserver.fr/en/2012/12/29/raspberry-pi-home-server-monitorer-le-systeme-avec-zabbix/
+
+#chown -R www-data:www-data /var/www/html/zabbix
+#chown -R root:root /var/www/html/zabbix
